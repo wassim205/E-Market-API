@@ -28,13 +28,14 @@ async function getOneProduct(req, res) {
 
 async function createProduct(req, res) {
   try {
-    const { title, description, price, stock, imageUrl } = req.body;
+    const { title, description, price, stock, category_id, imageUrl } =
+      req.body;
     const product = Products.create({
       title,
       description,
       price,
       stock,
-      //   category,
+      category_id,
       imageUrl,
     });
     //   const product = productCreated.toObject();
@@ -49,7 +50,7 @@ async function createProduct(req, res) {
 }
 
 // NOT FUNCTIONING !!!
-// PLEASE FIX THE LINE 58. IT NEEDS TO BE FIXED
+// PLEASE FIX THE LINE 60. IT NEEDS TO BE FIXED
 async function editProduct(req, res) {
   const id = req.params.id;
   const product = await Products.findById(id);

@@ -1,22 +1,23 @@
+const express = require("express");
 const mongoose = require("mongoose");
-const User = require("./models/user");
+// const User = require("./models/user");
+const userRoutes = require("./routes/userRoutes");
+const productRoutes = require("./routes/productRoutes");
 require("dotenv").config();
-// const frank =User.create({
-//   full_name: 'Issam',
-//   email: 'Issam@gmail.com', password: 'Issam123'
-// });
+const app = express();
+app.use(express.json());
 
-// const all = User.find();
-mongoose
-  .connect(process.env.MONGO_URI);
-  run()
+mongoose.connect(process.env.MONGO_URI);
+
+app.use("/users", userRoutes);
+app.use("/products", productRoutes);
+
 async function run() {
-   try {
-     const users = await User.find({ full_name: 'Issam'  });
-     console.log(users);
-     
-   } catch (error) {
+  try {
+    console.log("running goes well");
+  } catch (error) {
     console.log(error);
-    
-   }
- }
+  }
+}
+
+app.listen(3000, run());

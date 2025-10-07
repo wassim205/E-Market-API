@@ -18,13 +18,13 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    // category: {
-    //     type: String,
-    //     reference: {
-    //         model: "category",
-    //         key: "id"
-    //     }
-    // },
+    category_id: {
+        type: String,
+        reference: {
+            model: "Category",
+            key: "ObjectId"
+        }
+    },
     imageUrl: String,
 }, {
     timestamps: true

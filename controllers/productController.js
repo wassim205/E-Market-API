@@ -6,7 +6,7 @@ async function getProducts(req, res) {
   try {
     const products = await Products.find();
     res.status(200).json({
-      message: "all users found",
+      message: "all products found",
       products: products,
     });
   } catch (error) {
@@ -39,7 +39,7 @@ async function createProduct(req, res) {
     });
     //   const product = productCreated.toObject();
     res.status(201).json({
-      message: "project created successfully",
+      message: "product created successfully",
       product: product,
     });
   } catch (error) {

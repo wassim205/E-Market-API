@@ -20,4 +20,4 @@ async function run() {
   }
 }
 
-app.listen(3000, run());
+app.listen(process.env.PORT, run());

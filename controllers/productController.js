@@ -30,7 +30,7 @@ async function createProduct(req, res) {
   try {
     const { title, description, price, stock, category_id, imageUrl } =
       req.body;
-    const product = Products.create({
+    const product = await Products.create({
       title,
       description,
       price,
@@ -38,36 +38,40 @@ async function createProduct(req, res) {
       category_id,
       imageUrl,
     });
-    //   const product = productCreated.toObject();
     res.status(201).json({
       message: "product created successfully",
-      product: product,
+      product: product.toObject(),
     });
   } catch (error) {
-    //   throw error
-    res.status(400).json({ message: "error whil creating product" });
+    // res.status(400).json({ message: "error whil creating product" });
+    throw error;
   }
 }
 
-// NOT FUNCTIONING !!!
-// PLEASE FIX THE LINE 60. IT NEEDS TO BE FIXED
+// NEED OPTIMISATION
 async function editProduct(req, res) {
   const id = req.params.id;
-  const product = await Products.findById(id);
-  if (!product) {
-    res.status(400).json({ message: "product not found" });
-  }
-  product.updateOne();
+  const newProduct = await Products.findByIdAndUpdate(
+    id,
+    {
+      title: req.body.title,
+      description: req.body.description,
+      price: req.body.price,
+      stock: req.body.stock,
+      category_id: req.body.category_id,
+      imageUrl: req.body.imageUrl,
+    },
+    { new: true }
+  );
   res.status(200).json({
-    message: "product found succesfully",
-    product: product,
+    message: "product Updated successfully ",
+    product: newProduct,
   });
 }
 
 async function deleteProduct(req, res) {
   try {
-    const product = Products.findById();
-    await Products.deleteOne(product);
+    await Products.findByIdAndDelete(req.params.id);
     res.status(200).json("product deleted successfully");
   } catch (error) {
     throw error;

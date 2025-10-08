@@ -1,6 +1,5 @@
 const Categories = require("../models/categories");
 
-// ALL API'S NEED TO BE TESTED NOTHING IS SURELY WORKS !!
 
 async function getCategories(req, res) {
   try {
@@ -29,27 +28,28 @@ async function getOneCategory(req, res) {
 async function createCategory(req, res) {
   try {
     const { name } = req.body;
-    const category = Categories.create({
+    const category = await Categories.create({
       name,
     });
     res.status(201).json({
       message: "product created successfully",
-      category: category,
+      category: category.toObject(),
     });
   } catch (error) {
     res.status(400).json({ message: "error whil creating category" });
   }
 }
 
-// NOT FUNCTIONING !!!
-// PLEASE FIX THE LINE 52. IT NEEDS TO BE FIXED
+// NEED OPTIMISATIONS
 async function editCategory(req, res) {
   const id = req.params.id;
-  const category = await Categories.findById(id);
-  if (!category) {
-    res.status(400).json({ message: "category not found" });
-  }
-  category.updateOne();
+  const category = await Categories.findByIdAndUpdate(
+    id,
+    {
+      name: req.body.name,
+    },
+    { new: true }
+  );
   res.status(200).json({
     message: "category found succesfully",
     category: category,
@@ -58,8 +58,7 @@ async function editCategory(req, res) {
 
 async function deleteCategory(req, res) {
   try {
-    const category = Categories.findById();
-    await Categories.deleteOne(category);
+    await Categories.findByIdAndDelete(req.params.id);
     res.status(200).json("category deleted successfully");
   } catch (error) {
     throw error;

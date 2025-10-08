@@ -3,9 +3,11 @@ const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
+const logger = require('./middlewares/logger')
 require("dotenv").config();
 const app = express();
 app.use(express.json());
+app.use(logger);
 
 mongoose.connect(process.env.MONGO_URI);
 

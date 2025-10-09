@@ -9,7 +9,6 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 app.use(logger);
-app.use(errorHandler);
 
 mongoose.connect(process.env.MONGO_URI);
 
@@ -24,5 +23,6 @@ async function run() {
     console.log(error);
   }
 }
+app.use(errorHandler);
 
 app.listen(process.env.PORT, run());

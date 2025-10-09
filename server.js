@@ -16,6 +16,8 @@ app.use("/users", userRoutes);
 app.use("/products", productRoutes);
 app.use("/categories", categoryRoutes);
 
+app.use(require('./middlewares/notFound'));
+
 async function run() {
   try {
     console.log("running goes well");

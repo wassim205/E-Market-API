@@ -1,6 +1,42 @@
 const User = require("../models/user");
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         fullname:
+ *           type: string
+ *           description: The user's full name
+ *         email:
+ *           type: string
+ *           description: The user's email address
+ *         password:
+ *           type: string
+ *           description: The user's password
+ *       required:
+ *         - fullname
+ *         - email
+ *         - password
+ */
+
 // get all users
+
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: get all users
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: Users got successfully
+ *       500:
+ *         description: Server error
+ */
+
 async function getUsers(req, res, next) {
   try {
     const users = await User.find();
@@ -15,6 +51,26 @@ async function getUsers(req, res, next) {
 }
 
 // find one specific user
+/**
+ * @swagger
+ * /users/{id}:
+ *   get:
+ *     summary: get one specific user
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID
+ *     responses:
+ *       200:
+ *         description: User got successfully
+ *       500:
+ *         description: Server error
+ */
+
 async function getOneUser(req, res, next) {
   try {
     const id = req.params.id;
@@ -31,25 +87,62 @@ async function getOneUser(req, res, next) {
   }
 }
 
+// create a user
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     summary: Create a new user
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *     responses:
+ *       200:
+ *         description: User created successfully
+ *       400:
+ *         description: Email already exists or invalid input
+ *       500:
+ *         description: Server error
+ */
+
 async function createUser(req, res, next) {
-  
   try {
     const { fullname, email, password, role } = req.body;
     const createdUser = await User.create({ fullname, email, password, role });
 
-    // const userObj = createdUser.toObject();
     res.status(201).json({
       message: "user created successfully",
       user: createdUser,
     });
   } catch (error) {
-    // res.status(400).json({
-    //   message: "error while creating user",
-    // });
     next(error);
   }
 }
 
+// Delete user
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     summary: Delete user
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user ID
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *       500:
+ *         description: Server error
+ */
 async function deleteUser(req, res, next) {
   try {
     const user = User.findById();
